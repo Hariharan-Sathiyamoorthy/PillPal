@@ -1,0 +1,97 @@
+<%- include header.ejs %>
+
+<section class="py-4 py-xl-5">
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card" style="height: 205px;">
+                    <div class="card-body">
+                        <h4 class="card-title">Hello User</h4>
+                        <h6 class="text-muted card-subtitle mb-2">Your Account Address</h6>
+                        <p class="card-text"><%= account %></p>
+                        <h6 class="text-muted card-subtitle mb-2">Your Account Balance is</h6>
+                        <p class="card-text"><%= balance %> Ether</p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Crypto Stats</h4>
+                        <h6 class="text-muted card-subtitle mb-2">Crypto currency prices</h6>
+                        <ul>
+                            <li>Bitcoin: <%= (blockchair?.bitcoin?.data?.market_price_usd||0).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></li>
+                            <li>Ethereum: <%= (blockchair?.ethereum?.data?.market_price_usd||0).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></li>
+                            <li>Litecoin: <%= (blockchair?.litecoin?.data?.market_price_usd||0).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></li>
+                            <li>Dogecoin: <%= (blockchair?.dogecoin?.data?.market_price_usd||0).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) %></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Dosages for <%= account %></h4>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                  <th scope="col">Name</th>
+                                  <th scope="col">Dosage</th>
+                                  <th scope="col">Taken</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% for (let i = 0; i < medications.length; i++) { %>
+                                <tr>
+                                    <td><%= medications[i]?.name %></td>
+                                    <td><%= parseInt(medications[i]?.dosage) %>mg</td>
+                                    <td><%= medications[i]?.taken %></td>
+                                </tr>
+                                <% } %>
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Latest Transactions in the contract</h4>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                  <th scope="col">From</th>
+                                  <th scope="col">Block Number</th>
+                                  <th scope="col">Time stamp</th>
+                                  <th scope="col">Value</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% for (let i = 0; i < transactions.length; i++) { %>
+                                <tr>
+                                    <td><%= transactions[i]?.from %></td>
+                                    <td ><a class="link" href="https://sepolia.etherscan.io/block/<%= transactions[i]?.blockNumber%>"><%= transactions[i]?.blockNumber %></a></td>
+                                    <td><%= new Date(transactions[i]?.timeStamp * 1000).toLocaleString() %></td>
+                                    <td><%= transactions[i]?.value %> ETH</td>
+                                </tr>
+                                <% } %>
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<% include footer.ejs %>

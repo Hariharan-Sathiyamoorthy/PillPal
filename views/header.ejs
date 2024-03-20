@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>pillpal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/pulse/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="/assets/css/Navbar-With-Button-icons.css">
+    <link rel="stylesheet" href="/assets/css/Testimonials-images.css">
+</head>
+
+<body style="background: linear-gradient(147deg, #7b68ee, white 28%); background-size: 100% 100%; min-height: 100vh;">
+
+    <nav class="navbar navbar-expand-md bg-transparent py-3">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href=''><span
+                    class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><svg
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 576 576" width="1em" height="1em"
+                        fill="currentColor">
+                        <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                        <path
+                            d="M64 144c0-26.5 21.5-48 48-48s48 21.5 48 48V256H64V144zM0 144V368c0 61.9 50.1 112 112 112s112-50.1 112-112V189.6c1.8 19.1 8.2 38 19.8 54.8L372.3 431.7c35.5 51.7 105.3 64.3 156 28.1s63-107.5 27.5-159.2L427.3 113.3C391.8 61.5 321.9 49 271.3 85.2c-28 20-44.3 50.8-47.3 83V144c0-61.9-50.1-112-112-112S0 82.1 0 144zm296.6 64.2c-16-23.3-10-55.3 11.9-71c21.2-15.1 50.5-10.3 66 12.2l67 97.6L361.6 303l-65-94.8zM491 407.7c-.8 .6-1.6 1.1-2.4 1.6l4-2.8c-.5 .4-1 .8-1.6 1.2z">
+                        </path>
+                    </svg></span><span>PillPal</span></a><button data-bs-toggle="collapse" class="navbar-toggler"
+                data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><button class="nav-link active" onclick="connectMetamask()">Home</button>
+                    </li>
+                    <li class="nav-item"><button class="nav-link active" onclick="connectMetamask()">Dosages</button>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#">Transactions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+                <!-- </ul><button class="btn btn-primary" type="button">Button</button> -->
+            </div>
+        </div>
+    </nav>
+
+    <div class="spinner-container" id="spin"
+    style="display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; background: rgba(0, 0, 0,0.5); z-index: 9999 !important; display: flex !important; justify-content: center !important; align-items: center !important;">
+    <div class="spinner-border text-light" role="status" style="width: 4rem; height: 4rem; border: .2em solid transparent; border-top-color: black;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

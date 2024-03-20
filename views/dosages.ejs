@@ -1,0 +1,47 @@
+<%- include header.ejs %>
+
+<section class="py-4 py-xl-5">
+
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Dosages for <%= account %></h4>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                  <th scope="col">Name</th>
+                                  <th scope="col">Dosage</th>
+                                  <th scope="col">Taken</th>
+                                  <th scope="col">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% for (let i = 0; i < medications.length; i++) { %>
+                                <tr>
+                                    <td><%= medications[i]?.name %></td>
+                                    <td><%= parseInt(medications[i]?.dosage) %>mg</td>
+                                    <td><%= medications[i]?.taken %></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" onclick="takemedication('<%= i %>','<%= account %>')">Take</button>
+                                    </td>
+                                </tr>
+                                <% } %>
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="position: fixed; right: 109px; bottom: 42px;">
+        <button type="button" class="btn btn-primary btn-lg rounded-pill" onclick="location.href=`/createDosages`">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+</section>
+
+<% include footer.ejs %>
