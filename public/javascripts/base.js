@@ -9,72 +9,88 @@ window.addEventListener('beforeunload', function () {
     document.getElementById('spin').style.display = 'block';
 });
 
-var account
+var accounts;
+// if(window.location.pathname === '/'){
+//     if(accounts[0]) {
+//         document.getElementById('login1').innerHTML = 'Dashboard';
+//     }
+//     else{
+//         document.getElementById('login1').innerHTML = 'Connect Metamask';
+//     }
+
+// }
 window.connectMetamask = async () => {
     try {
-        var accounts = await ethereum.request({method: "eth_requestAccounts"});
-        account = accounts[0];
+       const accounts =  await ethereum.request({method: "eth_requestAccounts"});
+       console.log(accounts);
         if(accounts[0]) {
-
-            // console.log(account);
-            if (window.location.href.includes("dashboard")) {
-                location.assign(`/dosages/?account=${accounts[0]}`);
-                return;
-            }else if (window.location.href.includes("dosages")) {
-                location.assign(`/dosages/?account=${accounts[0]}`);
-                return;
-            }
-            else{
-                location.assign(`/dashboard/?account=${accounts[0]}`);
-                return;
-            }
+            location.assign(`/dashboard/?account=${accounts[0]}`);
         }
+            // console.log(account);
+            else{
+                location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+                return;
+            }
+
     } catch (error) {
         console.log('sssss');
-        // location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+        ocation.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
     }
+}
+window.routeDosages = async () => {
+    let account = await window.ethereum.request({method: 'eth_accounts'})
+    try {
+        if(account) {
+            location.assign(`/dosages/?account=${account[0]}`);
+        }
+            // console.log(account);
+            else{
+                location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+                return;
+            }
+
+    } catch (error) {
+        console.log('sssss');
+        location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+    }
+
+}
+window.routeProfile = async () => {
+    let account = await window.ethereum.request({method: 'eth_accounts'})
+    try {
+        if(account) {
+            location.assign(`/profile/?account=${account[0]}`);
+
+        }
+            // console.log(account);
+            else{
+                location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+                return;
+            }       
+    } catch (error) {
+
+        location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+    }
+}
+window.routeDashboard = async () => {
+    let account = await window.ethereum.request({method: 'eth_accounts'})
+    try {
+        if(account) {
+            location.assign(`/dashboard/?account=${account[0]}`);
+        }
+            // console.log(account);
+            else{
+                location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+                return;
+            }
+        } catch (error) {
+            location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+        }
 }
 
-window.connectContract = async () => {
-    const ABI = CONTRACT_ABI
-    const Address = CONTRACT_ADDRESS;
-    //window.ethereum;
-    window.web3 = await new Web3('http://localhost:8545');
-    const account = await window.web3.eth.getAccounts();
-    const Contract = await new window.web3.eth.Contract(ABI, Address);
-    console.log(Contract);
-    console.log(account);
-    async function getMedications(userAddress) {
-        const medCount = await Contract.methods.getMedicationCount().call({ from: userAddress });
-    
-        const medications = [];
-        for (let i = 0; i < medCount; i++) {
-            const med = await Contract.methods.getMedication(i).call({ from: userAddress });
-            medications.push(med);
-        }
-        console.log(medications);
-        let data = {
-            account: userAddress,
-            medications: medications
-        }
-        fetch('/dashboard', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.text())
-        .then(html => {
-            document.documentElement.innerHTML = html
-            // location.assign(`/dashboard`);
-        })
-        .catch((error) => console.error('Error:', error));
-        return medications;
-    }
-    getMedications(account[0]);
-    
-}
+
+
+
 
 if (window.location.href.includes('createDosages')) {
     window.addMedication = async  () => {
@@ -113,4 +129,35 @@ window.takemedication = async (id, account) => {
         document.getElementById('spin').style.display = 'none';
         location.assign(`/dosages/?account=${account}`);
     }
+}
+
+if(window.location.href.includes('profile') ){
+    let account = await window.ethereum.request({method: 'eth_accounts'})
+    window.getProfile = async () => {
+        window.web3 = await new Web3(window.ethereum);
+        // window.contract = await new window.web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+        // const aczz = window.ethereum.selectedAddress;
+        document.getElementById('spin').style.display = 'block';
+
+        window.web3.eth.getBalance(account[0], (err, wei) => {
+            if (err) {
+                console.error('Error getting balance:', err);
+            } else {
+                const balance = web3.utils.fromWei(wei, 'ether');
+                document.getElementById('b1').innerText = `Balance: ${balance} ETH`;
+                console.log('Balance:', balance);
+            }
+        });
+        const TransactionCount = await web3.eth.getTransactionCount(account[0])
+        document.getElementById('tc1').innerText = `Transaction Count: ${TransactionCount}`;
+        const GasPrice = await web3.eth.getGasPrice();
+        document.getElementById('gp1').innerText = `Gas Price: ${GasPrice}`;
+        const ChainID = await web3.eth.getChainId();
+        document.getElementById('c1').innerText = `Chain ID: ${ChainID}`;
+        document.getElementById('spin').style.display = 'none';
+
+
+
+    }
+    window.getProfile();
 }

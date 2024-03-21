@@ -305,6 +305,19 @@ router.get('/dosages', async function (req, res, next) {
   );
 });
 
+router.get('/profile', function (req, res, next) {
+  res.render('profile', { account: req.query.account }, function (err, html) {
+    if (err) {
+      console.error(err);
+      res.status(500)
+    }
+    else {
+      res.send(html);
+    }
+  }
+  );
+}
+);
 // router.post('/addDosages', async function (req, res, next) {
 //   console.log('account=>', req.body);
 
