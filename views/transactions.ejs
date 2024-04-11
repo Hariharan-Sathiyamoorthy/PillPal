@@ -1,0 +1,82 @@
+<%- include header.ejs %>
+<section class="py-4 py-xl-5">
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card" style="height: 205px;">
+          <div class="card-body">
+            <h4 class="card-title">Hello There</h4>
+            <h6 class="text-muted card-subtitle mb-2">Your Contract Address</h6>
+            <p class="card-text"><%= contract_add %></p>
+            <h6 class="text-muted card-subtitle mb-2">
+              Your Contract Balance is
+            </h6>
+            <p class="card-text"><%= balance %> ETH</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" >
+        <div class="card" style="height: 205px;">
+          <div class="card-body">
+            <h5 class="card-title">Deposit Ether to your Contract</h5>
+            <div class="row mb-3">
+              <div class="col-9">
+                <input
+                  type="text"
+                  id="deposit_amount"
+                  class="form-control"
+                  placeholder="Enter Deposit Amount"
+                  aria-label="Deposit Amount"
+                  required
+                />
+              </div>
+              <div class="col-3">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="deposit('<%= account %>')"
+                >
+                  Deposit
+                </button>
+              </div>
+            </div>
+            <h5 class="card-title">Send Ether to Anyone!</h5>
+            <div class="row g-3">
+              <div class="col-5">
+                <input
+                  type="text"
+                  id="cont_address"
+                  class="form-control"
+                  placeholder="Enter Address"
+                  aria-label="Enter Address"
+                  required
+                />
+              </div>
+              <div class="col-5">
+                <input
+                  type="text"
+                  id="cont_amount"
+                  class="form-control"
+                  placeholder="Enter Amount"
+                  aria-label="Enter Amount"
+                  required
+                />
+              </div>
+              <div class="col-2">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="transfer('<%=balance%>','<%= account %>')"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% include footer.ejs %>

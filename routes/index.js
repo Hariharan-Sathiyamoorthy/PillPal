@@ -1,5 +1,6 @@
 
 
+const e = require('express');
 var express = require('express');
 
 var router = express.Router();
@@ -262,7 +263,8 @@ router.get('/dashboard', async function (req, res, next) {
   }
   // console.log(parseInt(MedCount));
   // console.log(medications[0].name);
-
+  console.log('dassda',Transactions.result?.slice(0, 5));
+  // console.log('asdsa',Transactions.result?.forEach((element) => web3.utils.fromWei(element.value,'ether'))) 
 
   res.render('dashboard', {
     account: req.query.account,
@@ -303,6 +305,26 @@ router.get('/dosages', async function (req, res, next) {
     }
   }
   );
+});
+
+router.get('/transactions', async function (req, res, next) {
+  console.log('account=>', req.query.account);
+  const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+
+  // console.log('account=>',accounts2);/
+  const Balance = await contract.methods.getBalance().call({ from: req.query.account });
+  //convert amount to ether
+  const balance = web3.utils.fromWei(Balance, 'ether');
+  res.render('transactions', { account: req.query.account,balance,contract_add:CONTRACT_ADDRESS }, function (err, html) {
+    if (err) {
+      console.error(err);
+      res.status (500).send
+    }
+    else {
+      res.send(html);
+    }
+
+});
 });
 
 router.get('/profile', function (req, res, next) {

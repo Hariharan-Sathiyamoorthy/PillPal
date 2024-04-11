@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.5.0;
 
 contract MedicationReminder {
     uint256 public medCount = 0;
@@ -11,7 +11,7 @@ contract MedicationReminder {
         bool taken;
     }
 
-    mapping(address => Medication[]) public medications;
+    mapping(address => Medication[]) private medications;
 
     event MediactionCreated(
         uint256 id,
@@ -22,9 +22,21 @@ contract MedicationReminder {
 
     event MedTaken(uint256 id, bool taken);
 
-    //   constructor() public {
-    //     createTask("Check out dappuniversity.com");
-    //   }
+
+    function deposit() external payable {}
+
+    //Contract --> Address  -- withdrawal
+    function withdraw(address payable _to, uint256 _amount) external {
+        _to.transfer(_amount);
+    }
+
+    function getBalance() external view returns (uint256) {
+        return address(this).balance;
+    }
+
+    function getAddress() external view returns (address) {
+        return address(this);
+    }
 
     function addMedication(string memory _name, uint256 _dosage) public {
         medCount++;

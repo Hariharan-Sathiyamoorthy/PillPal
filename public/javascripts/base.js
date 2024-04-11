@@ -1,5 +1,7 @@
 
+
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from './config.js';
+
 
 window.addEventListener('load', function () {
     document.getElementById('spin').style.display = 'none';
@@ -19,6 +21,14 @@ var accounts;
 //     }
 
 // }
+window.callSwal = (title, text, icon) => {  
+    window.Swal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        confirmButtonText: 'Close'
+        })
+}
 window.connectMetamask = async () => {
     try {
        const accounts =  await ethereum.request({method: "eth_requestAccounts"});
@@ -42,6 +52,24 @@ window.routeDosages = async () => {
     try {
         if(account) {
             location.assign(`/dosages/?account=${account[0]}`);
+        }
+            // console.log(account);
+            else{
+                location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+                return;
+            }
+
+    } catch (error) {
+        console.log('sssss');
+        location.assign(`/error/?error=${"Coudnt connect to Metamask"}`);
+    }
+
+}
+window.routeTransactions = async () => {
+    let account = await window.ethereum.request({method: 'eth_accounts'})
+    try {
+        if(account) {
+            location.assign(`/transactions/?account=${account[0]}`);
         }
             // console.log(account);
             else{
@@ -160,4 +188,69 @@ if(window.location.href.includes('profile') ){
 
     }
     window.getProfile();
+}
+
+window.deposit = async (account) => {
+    const amount = document.getElementById('deposit_amount').value;
+    if(!amount) return callSwal('Error!','Please Enter a valid amount to deposit','error');
+    window.web3 = await new Web3(window.ethereum);
+    window.contract = await new window.web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    document.getElementById('spin').style.display = 'block';
+    const amountToSend = window.web3.utils.toWei(amount,'ether'); // send 1 Ether
+    console.log(amountToSend);
+    // if(!window.web3.utils.isBN(amountToSend)) return callSwal('Error!','Invalid amount','error');
+    try {
+        const result = await window.contract.methods.deposit().send({ from: account, value: amountToSend });
+        if (result.status) {
+            document.getElementById('spin').style.display = 'none';
+            location.assign(`/transactions/?account=${account}`);
+        }
+    } catch (error) {
+        console.error("Transaction has been denied by the user", error);
+        callSwal('Error!','Transaction have been denied by the user','error');
+        document.getElementById('spin').style.display = 'none';
+    }
+
+}
+
+window.transfer = async (balance,account) => {
+    const address = document.getElementById('cont_address').value;
+    const amount = document.getElementById('cont_amount').value;
+    if(!address || !amount){
+        callSwal('Error!','Please fill in all fields','error');
+        return;
+    }
+    window.web3 = await new Web3(window.ethereum);
+    window.contract = await new window.web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    document.getElementById('spin').style.display = 'block';
+    const amountToSend = window.web3.utils.toWei(amount,'ether');
+    if(!window.web3.utils.isAddress(address)){
+        callSwal('Error!','Invalid address or amount','error');
+        document.getElementById('spin').style.display = 'none';
+        return;
+    }
+     // send 1 Ether
+    if(amountToSend > window.web3.utils.toWei(balance,'ether')){
+        callSwal('Error!','Insufficient balance','error');
+        document.getElementById('spin').style.display = 'none';
+        return;
+    }
+    if(address === CONTRACT_ABI){
+        callSwal('Error!','Invalid address','error');
+        document.getElementById('spin').style.display = 'none';
+        return;
+    }
+    try {
+        
+        const result = await window.contract.methods.withdraw(address,amountToSend).send({ from: account });
+        if (result.status) {
+            document.getElementById('spin').style.display = 'none';
+            location.assign(`/transactions/?account=${account}`);
+        }
+    } catch (error) {
+        console.error("Transaction has been denied by the user", error);
+        callSwal('Error!','Transaction have been denied by the user','error');
+        document.getElementById('spin').style.display = 'none';   
+          
+        }
 }
