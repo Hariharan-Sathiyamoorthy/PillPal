@@ -255,6 +255,12 @@ router.get('/dashboard', async function (req, res, next) {
       return data;
     })
     .catch((error) => console.error('Error:', error));
+    const finTrans = Transactions.result?.slice(0, 5)?.map(element => {
+      return {
+        ...element,
+        value: web3.utils.fromWei(element.value, 'ether')
+      }
+    });
   // console.log('TransactionCount=>', Transactions.result?.slice(0, 5));
   const medications = [];
   for (let i = 0; i < MedCount; i++) {
@@ -271,7 +277,7 @@ router.get('/dashboard', async function (req, res, next) {
     blockchair: blockchair.data, 
     balance: web3.utils.fromWei(balance.result, 'ether'),
     medications: medications,
-    transactions: Transactions.result?.slice(0, 5)
+    transactions: finTrans
   }
     , function (err, html) {
       if (err) {
@@ -315,7 +321,21 @@ router.get('/transactions', async function (req, res, next) {
   const Balance = await contract.methods.getBalance().call({ from: req.query.account });
   //convert amount to ether
   const balance = web3.utils.fromWei(Balance, 'ether');
-  res.render('transactions', { account: req.query.account,balance,contract_add:CONTRACT_ADDRESS }, function (err, html) {
+  const Transactions = await fetch(`https://api-sepolia.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&startblock=0&endblock=99999999&page=1&offset=10&sort=desc&apikey=DM84VITNPUGHM1U1D27UUEWYQKMG6GCV1M`, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch((error) => console.error('Error:', error));
+  const finTrans = Transactions.result?.slice(0, 5)?.map(element => {
+    return {
+      ...element,
+      value: web3.utils.fromWei(element.value, 'ether')
+    }
+  });
+  console.log('Balance=>', finTrans);
+  // console.log('TransactionCount=>', Transactions.result?.slice(0, 5));
+  res.render('transactions', { account: req.query.account,balance,contract_add:CONTRACT_ADDRESS,transactions: finTrans }, function (err, html) {
     if (err) {
       console.error(err);
       res.status (500).send
@@ -340,20 +360,6 @@ router.get('/profile', function (req, res, next) {
   );
 }
 );
-// router.post('/addDosages', async function (req, res, next) {
-//   console.log('account=>', req.body);
-
-//   const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-//   //get accounts from metamask
-//   const account = req.body.account;
-//   const name = req.body.dosageName;
-//   const dosage = parseInt(req.body.dosageDose);
-//   console.log('methods', contract.methods);
-//   const MedCount = await contract.methods.addMedication(name,dosage).send({ from: '0xc4ecf557781b213e84fe6de2657510d16934a14f' });
-//   // const result = await contract.methods.addMedication(name, dosage).send({ from: '0xc4ecf557781b213e84fe6de2657510d16934a14f' });
-//   console.log(MedCount);
-//   res.send('success');
-// })
 
 router.get('/createDosages',function (req, res, next) {
   res.render('addDosage',function (err, html) {

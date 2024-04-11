@@ -82,7 +82,7 @@
                                     <td><%= transactions[i]?.from %></td>
                                     <td ><a class="link" href="https://sepolia.etherscan.io/block/<%= transactions[i]?.blockNumber%>"><%= transactions[i]?.blockNumber %></a></td>
                                     <td><%= new Date(transactions[i]?.timeStamp * 1000).toLocaleString() %></td>
-                                    <td><%= transactions[i]?.value %> ETH</td>
+                                    <td><%= transactions[i]?.value === '0.' ? '0': transactions[i]?.value %> ETH</td>
                                 </tr>
                                 <% } %>
                               </tbody>
