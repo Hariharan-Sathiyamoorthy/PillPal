@@ -235,8 +235,8 @@ window.transfer = async (balance,account) => {
         document.getElementById('spin').style.display = 'none';
         return;
     }
-    if(address === CONTRACT_ABI){
-        callSwal('Error!','Invalid address','error');
+    if(address === CONTRACT_ADDRESS){
+        callSwal('Error!','Use deposit method to send money to your contract','error');
         document.getElementById('spin').style.display = 'none';
         return;
     }

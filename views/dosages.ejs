@@ -25,7 +25,7 @@
                                     <td><%= parseInt(medications[i]?.dosage) %>mg</td>
                                     <td><%= medications[i]?.taken %></td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm" onclick="takemedication('<%= i %>','<%= account %>')">Take</button>
+                                        <button class="btn btn-primary btn-sm w-50" onclick="takemedication('<%= i %>','<%= account %>')"><%= medications[i]?.taken ? 'Toggle Taken' : 'Take' %></button>
                                     </td>
                                 </tr>
                                 <% } %>
