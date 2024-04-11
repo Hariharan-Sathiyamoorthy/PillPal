@@ -376,6 +376,29 @@ router.get('/createDosages',function (req, res, next) {
   );
 });
 
+router.post('/sendmail', function (req, res, next) {
+    const formData = require('form-data');
+    const Mailgun = require('mailgun.js');
+    const mailgun = new Mailgun(formData);
+    const mg = mailgun.client({username: 'api', key: 'f4f7e642d67dd9d86edec76ce0dfb16c-4b670513-db47d7c3'});
+    // console.log(req.body);
+    try {
+      const result = mg.messages.create('sandboxbcd05a960275487f858e5fb75808fa43.mailgun.org', {
+        from: `Excited User <${req.body.email}>`,
+        to: ["hari._.s@icloud.com"],
+        subject: "A user from your website has sent you a message",
+        text: req.body.name,
+        html: `<h4>${req.body.message}</h4>`
+      })
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+    res.redirect('/');
+}
+);
+
+
 
 
 router.get('/error', function (req, res, next) {
