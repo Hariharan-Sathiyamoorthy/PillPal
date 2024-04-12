@@ -11,16 +11,6 @@ window.addEventListener('beforeunload', function () {
     document.getElementById('spin').style.display = 'block';
 });
 
-var accounts;
-// if(window.location.pathname === '/'){
-//     if(accounts[0]) {
-//         document.getElementById('login1').innerHTML = 'Dashboard';
-//     }
-//     else{
-//         document.getElementById('login1').innerHTML = 'Connect Metamask';
-//     }
-
-// }
 window.callSwal = (title, text, icon) => {  
     window.Swal.fire({
         title: title,
@@ -129,15 +119,21 @@ if (window.location.href.includes('createDosages')) {
         window.web3 = await new Web3(window.ethereum);
         window.contract = await new window.web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
         // call the addMedication function
-        document.getElementById('spin').style.display = 'block';
-        const result  = await window.contract.methods.addMedication(dosageName, dosageDose).send({ from: account });
-        // only on success redirect to the dosages page
-        console.log(result);
-        if (result.status) {
-            document.getElementById('spin').style.display = 'none';
+        try {
+            document.getElementById('spin').style.display = 'block';
+            const result  = await window.contract.methods.addMedication(dosageName, dosageDose).send({ from: account });
+            // only on success redirect to the dosages page
+            console.log(result);
+            if (result.status) {
+                document.getElementById('spin').style.display = 'none';
 
-            window.location.href = '/dosages?account=' +account;
+                window.location.href = '/dosages?account=' +account;
         }
+        } catch (error) {
+            document.getElementById('spin').style.display = 'none';
+            callSwal('Error!','Transaction have been denied by the user','error');
+        }
+        
     }
     async function requestAccount() {
     var a = await ethereum.request({ method: "eth_requestAccounts" });
@@ -152,11 +148,18 @@ window.takemedication = async (id, account) => {
     window.web3 = await new Web3(window.ethereum);
     window.contract = await new window.web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
     document.getElementById('spin').style.display = 'block';
-    const result = await window.contract.methods.toggleTaken(id).send({ from: account });
-    if (result.status) {
+    try {
+        const result = await window.contract.methods.toggleTaken(id).send({ from: account });
+        if (result.status) {
+            document.getElementById('spin').style.display = 'none';
+            location.assign(`/dosages/?account=${account}`);
+        }
+        
+    } catch (error) {
         document.getElementById('spin').style.display = 'none';
-        location.assign(`/dosages/?account=${account}`);
+        callSwal('Error!','Transaction have been denied by the user','error');
     }
+    
 }
 
 if(window.location.href.includes('profile') ){

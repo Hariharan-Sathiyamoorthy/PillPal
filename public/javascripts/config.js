@@ -1,7 +1,36 @@
- export const CONTRACT_ADDRESS = '0x4Fb6733469fC5a90C84F467Be5c86614a3e2C793'
+ export const CONTRACT_ADDRESS = '0x4431f2edc9429b7b53d6330b7761ef3c5e93b6ec'
 
 
  export const CONTRACT_ABI = [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_dosage",
+				"type": "uint256"
+			}
+		],
+		"name": "addMedication",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "deposit",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
 	{
 		"anonymous": false,
 		"inputs": [
@@ -56,17 +85,12 @@
 		"constant": false,
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
 				"internalType": "uint256",
-				"name": "_dosage",
+				"name": "_id",
 				"type": "uint256"
 			}
 		],
-		"name": "addMedication",
+		"name": "toggleTaken",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -74,11 +98,22 @@
 	},
 	{
 		"constant": false,
-		"inputs": [],
-		"name": "deposit",
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "withdraw",
 		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
+		"payable": false,
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -175,41 +210,6 @@
 		],
 		"payable": false,
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_id",
-				"type": "uint256"
-			}
-		],
-		"name": "toggleTaken",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "_to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "withdraw",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]
